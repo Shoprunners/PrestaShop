@@ -7070,7 +7070,7 @@ class ProductCore extends ObjectModel
             'ORDER BY `position`'
         );
 
-        if ($position > count($result)) {
+        if ($position > count($result) && count($result) > 0) {
             WebserviceRequest::getInstance()->setError(
                 500,
                 $this->trans(
@@ -7087,7 +7087,9 @@ class ProductCore extends ObjectModel
         // result is indexed by recordset order and not position. positions start at index 1 so we need an empty element
         array_unshift($result, null);
         foreach ($result as &$value) {
-            $value = $value['id_product'];
+            if($value != null) {
+                $value = $value['id_product'];
+            }            
         }
 
         $current_position = $this->getWsPositionInCategory();
